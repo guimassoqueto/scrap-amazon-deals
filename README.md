@@ -40,4 +40,6 @@ scrapy genspider bookspider <website-to-scrap>
 
 (after code the spiders inside spiders/*spider.py)
 scrapy crawl <spider-name> (name class attribute inside spiders/*spider.py)
+
+scrapy crawl <spider-name> -O <filename>.<ext> (ext can be .json, .csv, etc.)
 ```
