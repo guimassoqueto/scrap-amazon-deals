@@ -6,8 +6,30 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from bookscraper.items import BookField
 
 
 class BookscraperPipeline:
     def process_item(self, item, spider):
+        adapter = ItemAdapter(item)
+
+        # strip all whitespaces from strings
+        field_names = adapter.field_names()
+        for field_name in field_names:
+            value = adapter.get(field_name)
+            adapter[field_name] = value.strip()
+
+        # category --> switch to lowercase
+        value = adapter.get(BookField.CATEGORY.value)
+        adapter[BookField.CATEGORY.value] = value.lower()
+
+        # price --> convert to float
+        value = adapter.get(BookField.PRICE.value)
+        value = value.replace("£", "")
+        adapter[BookField.PRICE.value] = float(value)
+
+        # reviews --> convert string to number
+        num_reviews_string = adapter.get(BookField.REVIEWS.value)
+        adapter[BookField.REVIEWS.value] = int(num_reviews_string)
+
         return item

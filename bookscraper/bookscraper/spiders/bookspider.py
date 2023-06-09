@@ -1,4 +1,5 @@
 import scrapy
+from bookscraper.items import BookItem
 
 
 class BookspiderSpider(scrapy.Spider):
@@ -18,7 +19,7 @@ class BookspiderSpider(scrapy.Spider):
             else:
                 book_url = "https://books.toscrape.com/catalogue/" + book_relative_url
 
-            yield response.follow(book_url, callback=self.parse_bookpage)
+            yield response.follow(book_url, callback=self.parse_book_page)
 
         next_page: str = response.css("li.next>a::attr(href)").get()
         if next_page is not None:
@@ -28,17 +29,19 @@ class BookspiderSpider(scrapy.Spider):
                 next_page_url = "https://books.toscrape.com/catalogue/" + next_page
             yield response.follow(next_page_url, callback=self.parse)
 
-    def parse_bookpage(self, response):
+    def parse_book_page(self, response):
+        book_item = BookItem()
         book_container = response.css("div#content_inner")
         table_rows = book_container.css("table>tr")
-        yield {
-            "url": response.url,
-            "title": book_container.css("h1::text").get(),
-            "category": response.css("ul.breadcrumb>li")[-2].css("a::text").get(),
-            "price": book_container.css(
-                "div.col-sm-6.product_main>p.price_color::text"
-            ).get(),
-            "product_type": table_rows[1].css("td::text").get(),
-            "product_tax": table_rows[4].css("td::text").get(),
-            "reviews": table_rows[-1].css("td::text").get(),
-        }
+
+        book_item["url"] = response.url
+        book_item["title"] = book_container.css("h1::text").get()
+        book_item["category"] = (
+            response.css("ul.breadcrumb>li")[-2].css("a::text").get()
+        )
+        book_item["price"] = book_container.css(
+            "div.col-sm-6.product_main>p.price_color::text"
+        ).get()
+        book_item["reviews"] = table_rows[-1].css("td::text").get()
+
+        yield book_item
