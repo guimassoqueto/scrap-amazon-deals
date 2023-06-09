@@ -1,11 +1,13 @@
 # scraper-scrapy
 Scrapy is a scraper tool framework built in python
 
+
 ## Requirements
 * [asdf](https://asdf-vm.com/)
 * [Python Poetry Dependencies Manager](https://python-poetry.org/)
 * Able to do `make` commands in the terminal
 * [asdf python 3.11+](https://github.com/asdf-community/asdf-python)
+
 
 ## Init the project
 
@@ -24,7 +26,13 @@ make install
 make pre-commit
 ```
 
-```txt
+
+## Project Order
+1. [bookscraper](./bookscraper/)
+
+
+## Useful Commands
+```bash
 scrapy startproject <project-name>
 
 (inside the project folder)
