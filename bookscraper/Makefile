@@ -8,3 +8,7 @@ migrate:
 
 db-migrate:
 	${COMPOSE} up postgres migrate -d
+
+# open repository in browser
+or:
+	open https://github.com/guimassoqueto/scraper-scrapy
