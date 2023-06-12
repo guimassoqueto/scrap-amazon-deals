@@ -29,17 +29,3 @@ make pre-commit
 
 ## Project Order
 1. [bookscraper](./bookscraper/)
-
-
-## Useful Commands
-```bash
-scrapy startproject <project-name>
-
-(inside the project folder)
-scrapy genspider bookspider <website-to-scrap>
-
-(after code the spiders inside spiders/*spider.py)
-scrapy crawl <spider-name> (name class attribute inside spiders/*spider.py)
-
-scrapy crawl <spider-name> -O <filename>.<ext> (ext can be .json, .csv, etc.)
-```
