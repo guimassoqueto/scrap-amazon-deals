@@ -2,11 +2,9 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-
-
-# useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 from bookscraper.items import BookField
+from bookscraper.helpers.postgres_helper import insert_into
 
 
 class BookscraperPipeline:
@@ -32,4 +30,10 @@ class BookscraperPipeline:
         num_reviews_string = adapter.get(BookField.REVIEWS.value)
         adapter[BookField.REVIEWS.value] = int(num_reviews_string)
 
+        return item
+
+
+class SaveToPostgresPipeline:
+    async def process_item(self, item, spider):
+        await insert_into("books", item)
         return item

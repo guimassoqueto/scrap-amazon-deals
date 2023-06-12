@@ -6,6 +6,19 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from os import getenv
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# start .env variables
+POSTGRES_PORT = getenv("POSTGRES_PORT") or 5432
+POSTGRES_DB = getenv("POSTGRES_DB") or "postgres"
+POSTGRES_USER = getenv("POSTGRES_USER") or "postgres"
+POSTGRES_PASSWORD = getenv("POSTGRES_PASSWORD") or "password"
+POSTGRES_HOST = getenv("POSTGRES_HOST") or "127.0.0.1"
+# end .env variables
+
 
 BOT_NAME = "bookscraper"
 
@@ -64,6 +77,7 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     "bookscraper.pipelines.BookscraperPipeline": 300,
+    "bookscraper.pipelines.SaveToPostgresPipeline": 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -91,3 +105,5 @@ ITEM_PIPELINES = {
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+FEEDS = {"books-data.json": {"format": "json"}}

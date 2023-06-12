@@ -7,6 +7,11 @@ class BookspiderSpider(scrapy.Spider):
     allowed_domains = ["books.toscrape.com"]
     start_urls = ["https://books.toscrape.com"]
 
+    # overwrite the FEEDS variable at settings.py
+    custom_settings = {
+        "FEEDS": {"books-data.csv": {"format": "csv", "overwrite": True}}  # or False
+    }
+
     def parse(self, response):
         books = response.css("article.product_pod")
         for book in books:
