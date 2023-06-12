@@ -1,12 +1,12 @@
 # init virtual env
-shell:
+s:
 	poetry shell
 
 # install dependencies
-install:
+i:
 	poetry install
 
-pre-commit:
+pc:
 	pre-commit install && pre-commit install --hook-type commit-msg
 
 # open repository in browser
