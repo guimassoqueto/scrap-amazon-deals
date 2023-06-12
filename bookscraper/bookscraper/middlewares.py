@@ -7,6 +7,7 @@ from scrapy import signals
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
+from bookscraper.helpers.fake_header import fake_header
 
 
 class BookscraperSpiderMiddleware:
@@ -101,3 +102,10 @@ class BookscraperDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
+
+
+class FakeHeaderMiddleware:
+    def process_request(self, request, spider):
+        fh = fake_header()
+        for key in fh:
+            request.headers[key] = fh[key]
