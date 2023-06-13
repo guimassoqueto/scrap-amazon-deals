@@ -1,3 +1,5 @@
+COMPOSE=docker compose
+
 # init virtual env
 s:
 	poetry shell

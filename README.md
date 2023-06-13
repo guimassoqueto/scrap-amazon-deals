@@ -29,12 +29,3 @@ make pre-commit
 
 ## Project Order
 1. [bookscraper](./bookscraper/)
-
-
-## Useful Commands
-```bash
-scrapy startproject <project-name>
-
-(inside the project folder)
-scrapy genspider bookspider <website-to-scrap>
-```
