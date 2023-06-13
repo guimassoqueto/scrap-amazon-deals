@@ -65,8 +65,6 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     "bookscraper.middlewares.FakeHeaderMiddleware": 400,
-    "rotating_proxies.middlewares.RotatingProxyMiddleware": 610,
-    "rotating_proxies.middlewares.BanDetectionMiddleware": 620,
 }
 
 # Enable or disable extensions
@@ -109,12 +107,3 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
 FEEDS = {"books-data.json": {"format": "json"}}
-
-
-# Rotating Proxies
-ROTATING_PROXY_LIST = [
-    "201.140.238.230:5678",
-    "168.205.218.61:4145",
-    "177.131.29.214:4153",
-    "186.251.255.121:31337",
-]

@@ -14,7 +14,6 @@ asyncpg = "^0.27.0"
 python-dotenv = "^1.0.0"
 fake-useragent = "^1.1.3"
 install = "^1.3.5"
-scrapy-rotating-proxies = "^0.6.2"
 
 
 [tool.poetry.group.dev.dependencies]
