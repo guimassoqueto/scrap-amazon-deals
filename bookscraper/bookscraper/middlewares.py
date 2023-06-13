@@ -104,8 +104,14 @@ class BookscraperDownloaderMiddleware:
         spider.logger.info("Spider opened: %s" % spider.name)
 
 
+# Fake Header Middleware
 class FakeHeaderMiddleware:
     def process_request(self, request, spider):
         fh = fake_header()
         for key in fh:
             request.headers[key] = fh[key]
+
+
+# Rotating Proxies
+class ProxyRotationMiddleware:
+    pass
