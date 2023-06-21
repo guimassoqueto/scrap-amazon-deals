@@ -12,3 +12,6 @@ db-migrate:
 # open repository in browser
 or:
 	open https://github.com/guimassoqueto/scraper-scrapy
+
+env:
+	cp .env.sample .env 
