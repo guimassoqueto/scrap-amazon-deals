@@ -3,10 +3,19 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from enum import Enum
+from scrapy.item import Item, Field
 
 
-class PlaywrightAmazonItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class ProductItem(Item):
+    id = Field()
+    title = Field()
+    reviews = Field()
+    rating = Field()
+
+
+class ProductFields(Enum):
+    ID = "id"
+    TITLE = "title"
+    REVIEWS = "reviews"
+    RATING = "rating"
