@@ -29,6 +29,6 @@ make pre-commit
 
 ## Project Order
 1. [bookscraper](./bookscraper/)
-2. [bookscraper](./playwright_amazon/)
-3. [bookscraper](./splash_amazon/)
+2. [splash amazon - dont work](./splash_amazon/)
+3. [plawywight amazon - working](./playwright_amazon/)
 

@@ -6,6 +6,19 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
+
+# start .env variables
+POSTGRES_PORT = getenv("POSTGRES_PORT") or 5432
+POSTGRES_DB = getenv("POSTGRES_DB") or "postgres"
+POSTGRES_USER = getenv("POSTGRES_USER") or "postgres"
+POSTGRES_PASSWORD = getenv("POSTGRES_PASSWORD") or "password"
+POSTGRES_HOST = getenv("POSTGRES_HOST") or "127.0.0.1"
+# end .env variables
+
 
 BOT_NAME = "playwright_amazon"
 
@@ -20,7 +33,7 @@ NEWSPIDER_MODULE = "playwright_amazon.spiders"
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-# CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 16
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -50,9 +63,9 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    "playwright_amazon.middlewares.PlaywrightAmazonDownloaderMiddleware": 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    "playwright_amazon.middlewares.FakeHeaderMiddleware": 400,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -62,9 +75,10 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    "playwright_amazon.pipelines.PlaywrightAmazonPipeline": 300,
-# }
+ITEM_PIPELINES = {
+    "playwright_amazon.pipelines.PlaywrightAmazonPipeline": 300,
+    "playwright_amazon.pipelines.SaveToPostgresPipeline": 400,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
