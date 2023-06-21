@@ -29,3 +29,6 @@ make pre-commit
 
 ## Project Order
 1. [bookscraper](./bookscraper/)
+2. [bookscraper](./playwright_amazon/)
+3. [bookscraper](./splash_amazon/)
+
