@@ -1,5 +1,5 @@
 import asyncpg
-from playwright_amazon.settings import (
+from amazon.settings import (
     POSTGRES_HOST,
     POSTGRES_PASSWORD,
     POSTGRES_USER,

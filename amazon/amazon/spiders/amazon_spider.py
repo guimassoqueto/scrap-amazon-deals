@@ -1,6 +1,6 @@
 import scrapy
-from playwright_amazon.items import ProductItem
-from playwright_amazon.helpers.get_category import get_category
+from amazon.items import ProductItem
+from amazon.helpers.get_category import get_category
 
 from logging import getLogger
 

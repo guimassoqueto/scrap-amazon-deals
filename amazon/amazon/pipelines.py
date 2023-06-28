@@ -6,8 +6,8 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-from playwright_amazon.helpers.postgres_helper import upsert_data
-from playwright_amazon.items import ProductFields
+from amazon.helpers.postgres_helper import upsert_data
+from amazon.items import ProductFields
 from re import search, sub
 
 
