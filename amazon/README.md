@@ -12,7 +12,7 @@ poetry install
 
 2. At root directory
 ```shell
-cd playwright_amazon
+cd amazon
 ```
 
 3. Run:
