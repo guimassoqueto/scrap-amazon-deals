@@ -10,14 +10,12 @@ from scrapy.item import Item, Field
 class ProductItem(Item):
     id = Field()
     title = Field()
-    reviews = Field()
-    rating = Field()
     category = Field()
+    reviews = Field()
 
 
 class ProductFields(Enum):
     ID = "id"
     TITLE = "title"
-    REVIEWS = "reviews"
-    RATING = "rating"
     CATEGORY = "category"
+    REVIEWS = "reviews"

@@ -8,9 +8,9 @@ from playwright_amazon.settings import (
 )
 
 
-async def insert_into(table: str, data: dict) -> None:
+async def upsert_data(table: str, item: dict) -> None:
     """
-    Insert data into a postgres table.
+    Upsert data into a postgres table.
 
     Args:
         table (string): The name of the table that the data will be inserted.
@@ -20,7 +20,7 @@ async def insert_into(table: str, data: dict) -> None:
         None.
 
     Example:
-        >>> insert_into("users", data: {"name": "John", "date_of_birth": datetime.date(1990, 1, 1)})
+        >>> INSERT INTO products(id,title,category,reviews) VALUES('B0BTRPDWTB','Guilherme','Categoria Guilherme',666) ON CONFLICT (id) DO UPDATE SET id = 'B0BTRPDWTB',title = 'Guilherme',category = 'Categoria Guilherme',reviews = 666;
     """
     connection = await asyncpg.connect(
         user=POSTGRES_USER,
@@ -30,10 +30,26 @@ async def insert_into(table: str, data: dict) -> None:
         database=POSTGRES_DB,
     )
 
-    columns = ", ".join(data.keys())
-    values = ", ".join(f"${i}" for i in range(1, len(data) + 1))
-
-    await connection.execute(
-        f"INSERT INTO {table}({columns}) VALUES({values})", *data.values()
-    )
+    await connection.execute(upsert_query(table, item))
     await connection.close()
+
+
+def upsert_query(table: str, item: dict) -> str:
+    insert = f"INSERT INTO {table}("
+    values = "VALUES("
+    on_conflict = "ON CONFLICT (id)\nDO UPDATE SET "
+    for key, value in item.items():
+        insert += f"{key},"
+
+        if isinstance(value, str):
+            values += f"'{value}',"
+            on_conflict += f"{key} = '{value}',"
+        else:
+            values += f"{value},"
+            on_conflict += f"{key} = {value},"
+
+    insert += "updated_at)\n"
+    values += f"NOW())\n"
+    on_conflict += f"updated_at = NOW();"
+
+    return insert + values + on_conflict

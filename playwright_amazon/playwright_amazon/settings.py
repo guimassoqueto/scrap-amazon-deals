@@ -8,6 +8,17 @@
 
 from dotenv import load_dotenv
 from os import getenv
+from scrapy.utils.log import configure_logging
+from logging import basicConfig, INFO
+
+# configure logging
+configure_logging(install_root_handler=False)
+basicConfig(
+    filename="logs.log",
+    format="[%(asctime)s] %(name)s %(levelname)s: %(message)s",
+    level=INFO,
+)
+# end logging
 
 load_dotenv()
 
