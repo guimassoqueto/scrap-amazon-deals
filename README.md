@@ -6,29 +6,23 @@ Scrapy is a scraper tool framework built in python
 * [asdf](https://asdf-vm.com/)
 * [Python Poetry Dependencies Manager](https://python-poetry.org/)
 * Able to do `make` commands in the terminal
-* [asdf python 3.11+](https://github.com/asdf-community/asdf-python)
+* [asdf python 3.10+](https://github.com/asdf-community/asdf-python)
 
 
 ## Init the project
 
 1. init the virtual environment
 ```bash
-make shell
+poetry shell
 ```
 
 2. install dependencies
 ```bash
-make install
+poetry install
 ```
 
 3. pre-commit hooks (to avoid bad commit messages, and do tests before commit)
 ```bash
-make pre-commit
+pre-commit install && pre-commit install --hook-type commit-msg
 ```
-
-
-## Project Order
-1. [bookscraper](./bookscraper/)
-2. [splash amazon - dont work](./splash_amazon/)
-3. [plawywight amazon - working](./playwright_amazon/)
 
