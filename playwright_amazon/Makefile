@@ -13,5 +13,9 @@ db-migrate:
 or:
 	open https://github.com/guimassoqueto/scraper-scrapy
 
+# create .env from .env.sample
 env:
 	cp .env.sample .env 
+
+scrap:
+	make db-migrate && scrapy crawl amazon_spider

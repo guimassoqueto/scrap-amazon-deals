@@ -12,6 +12,7 @@ class ProductItem(Item):
     title = Field()
     reviews = Field()
     rating = Field()
+    category = Field()
 
 
 class ProductFields(Enum):
@@ -19,3 +20,4 @@ class ProductFields(Enum):
     TITLE = "title"
     REVIEWS = "reviews"
     RATING = "rating"
+    CATEGORY = "category"

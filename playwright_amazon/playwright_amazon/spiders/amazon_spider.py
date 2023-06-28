@@ -1,5 +1,6 @@
 import scrapy
 from playwright_amazon.items import ProductItem
+from playwright_amazon.helpers.get_category import get_category
 
 
 class AmazonSpiderSpider(scrapy.Spider):
@@ -33,6 +34,10 @@ class AmazonSpiderSpider(scrapy.Spider):
         product_item["rating"] = container.css(
             "span.a-size-medium.a-color-base::text"
         ).get()
+
+        product_item["category"] = get_category(
+            response.css("div#wayfinding-breadcrumbs_feature_div").get()
+        )
 
         yield product_item
 
