@@ -22,6 +22,9 @@ def get_generator(
     return (url_format(first_page, i) for i in range(0, deals_pages_count * 2 - 1))
 
 
+pages = get_generator(34, invert=True)
+
+
 class AmazonSpiderSpider(scrapy.Spider):
     name = "amazon_spider"
     base_amazon_url = "https://www.amazon.com.br"
@@ -29,7 +32,6 @@ class AmazonSpiderSpider(scrapy.Spider):
     def start_requests(self):
         # GET request
 
-        pages = get_generator(34, invert=True)
         for page in pages:
             yield scrapy.Request(page, meta={"playwright": True})
 
@@ -39,8 +41,11 @@ class AmazonSpiderSpider(scrapy.Spider):
             if "/dp/" in url:
                 yield response.follow(url, callback=self.parse_product_page)
 
-            if "/deal" in url:
+            elif "/deal" in url:
                 yield response.follow(url, callback=self.parse_deals_page)
+
+            else:
+                continue
 
     def parse_product_page(self, response):
         product_item = ProductItem()
@@ -57,5 +62,9 @@ class AmazonSpiderSpider(scrapy.Spider):
     def parse_deals_page(self, response):
         hrefs = response.css("a.a-link-normal::attr(href)").getall()[::2]
         for url in hrefs:
-            product_url = self.base_amazon_url + url
-            yield response.follow(product_url, callback=self.parse_product_page)
+            if "/dp/" in url:
+                product_url = self.base_amazon_url + "/dp/" + url.split("/dp/")[1]
+                yield response.follow(product_url, callback=self.parse_product_page)
+
+            else:
+                continue
