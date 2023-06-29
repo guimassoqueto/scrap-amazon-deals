@@ -26,7 +26,7 @@ class PlaywrightAmazonPipeline:
         # remove ' | Amazon.com.br' from title
         value = adapter.get(ProductFields.TITLE.value)
         adapter[ProductFields.TITLE.value] = sub(
-            r"[\||:]\s+.mazon.com.br.?\s?", "", value
+            r"[\||:]?\s*.mazon.com.br.?\s?", "", value
         )
 
         # get product id
