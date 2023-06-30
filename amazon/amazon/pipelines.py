@@ -26,12 +26,6 @@ class PlaywrightAmazonPipeline:
             value = adapter.get(field_name)
             adapter[field_name] = value.strip().replace("'", "")
 
-        # remove ' | Amazon.com.br' from title
-        value = adapter.get(ProductFields.TITLE.value)
-        adapter[ProductFields.TITLE.value] = sub(
-            r"[\||:]?\s*.mazon.com.br.?\s?", "", value
-        )
-
         # get product id
         value = adapter.get(ProductFields.ID.value)
         adapter[ProductFields.ID.value] = search(r"/dp/(\w{10})", value).groups()[0]
