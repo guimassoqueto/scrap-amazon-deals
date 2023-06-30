@@ -6,9 +6,14 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-from amazon.helpers.postgres_helper import upsert_data
+import psycopg2
+from amazon.helpers.postgres_helper import upsert_query
 from amazon.items import ProductFields
 from re import search, sub
+from amazon.settings import POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_USER
+from logging import getLogger
+
+logger = getLogger("pipelines.py")
 
 
 class PlaywrightAmazonPipeline:
@@ -20,12 +25,6 @@ class PlaywrightAmazonPipeline:
         for field_name in field_names:
             value = adapter.get(field_name)
             adapter[field_name] = value.strip().replace("'", "")
-
-        # remove ' | Amazon.com.br' from title
-        value = adapter.get(ProductFields.TITLE.value)
-        adapter[ProductFields.TITLE.value] = sub(
-            r"[\||:]\s+.mazon.com.br.?\s?", "", value
-        )
 
         # get product id
         value = adapter.get(ProductFields.ID.value)
@@ -41,6 +40,27 @@ class PlaywrightAmazonPipeline:
 
 
 class SaveToPostgresPipeline:
-    async def process_item(self, item, spider):
-        await upsert_data("products", item)
+    def __init__(self):
+        ## Create/Connect to database
+        self.connection = psycopg2.connect(
+            host=POSTGRES_HOST,
+            user=POSTGRES_USER,
+            password=POSTGRES_PASSWORD,
+            dbname=POSTGRES_DB,
+        )
+
+        ## Create cursor, used to execute commands
+        self.cur = self.connection.cursor()
+
+    def process_item(self, item, spider):
+        ## Define insert statement
+        self.cur.execute(upsert_query("products", item))
+
+        ## Execute insert of data into database
+        self.connection.commit()
         return item
+
+    def close_spider(self, spider):
+        ## Close cursor & connection to database
+        self.cur.close()
+        self.connection.close()
