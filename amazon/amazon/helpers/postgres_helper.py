@@ -1,3 +1,8 @@
+from logging import getLogger
+
+logger = getLogger("postgres_helper.py")
+
+
 def upsert_query(table: str, item: dict) -> str:
     insert = f"INSERT INTO {table}("
     values = "VALUES("
@@ -15,5 +20,4 @@ def upsert_query(table: str, item: dict) -> str:
     insert += "updated_at)\n"
     values += f"NOW())\n"
     on_conflict += f"updated_at = NOW();"
-
     return insert + values + on_conflict

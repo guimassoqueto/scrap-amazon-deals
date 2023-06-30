@@ -11,6 +11,9 @@ from amazon.helpers.postgres_helper import upsert_query
 from amazon.items import ProductFields
 from re import search, sub
 from amazon.settings import POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_USER
+from logging import getLogger
+
+logger = getLogger("pipelines.py")
 
 
 class PlaywrightAmazonPipeline:
