@@ -11,11 +11,11 @@ class AmazonSpiderSpider(scrapy.Spider):
     name = "amazon_spider"
     base_amazon_url = "https://www.amazon.com.br"
     current_offers_page = 1
-    total_offer_pages = 33  # adicionar metodo para descobrir numero de paginas em promo
+    total_offer_pages = 30  # adicionar metodo para descobrir numero de paginas em promo
 
     def start_requests(self):
         # GET request
-        scrap_all_deals = False
+        scrap_all_deals = True
 
         if scrap_all_deals:
             pages = get_generator(self.total_offer_pages)
@@ -26,11 +26,10 @@ class AmazonSpiderSpider(scrapy.Spider):
                 yield scrapy.Request(page, meta={"playwright": True})
                 self.current_offers_page += 1
         else:
-            logger.error(
-                f"[START REQUESTS] Scraping only the first deals page {self.current_offers_page} of {self.total_offer_pages}"
-            )
+            page = "https://www.amazon.com.br/deals"
+            logger.error(f"[START REQUESTS] Scraping page: {page}")
             yield scrapy.Request(
-                "https://www.amazon.com.br/deals",
+                page,
                 dont_filter=True,
                 meta={"playwright": True},
             )
@@ -45,7 +44,7 @@ class AmazonSpiderSpider(scrapy.Spider):
                 if "/dp/" in url:
                     yield response.follow(url, callback=self.parse_product_page)
 
-                elif "/deal/" in url:
+                elif "/deal/" in url or "s?hidden-keywords=" in url:
                     yield response.follow(url, callback=self.parse_deals_page)
         else:
             yield response.follow(response_url, callback=self.parse_product_page)
