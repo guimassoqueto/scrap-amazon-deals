@@ -3,6 +3,7 @@ CREATE TABLE products (
 	"title" TEXT NOT NULL,
 	"category" VARCHAR(255) NOT NULL,
 	"reviews" INTEGER NOT NULL,
+	"is_prime" BOOLEAN NOT NULL DEFAULT 'false',
 	"created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
 	"updated_at" TIMESTAMP WITH TIME ZONE NOT NULL
 );
