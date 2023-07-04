@@ -26,3 +26,7 @@ poetry install
 pre-commit install && pre-commit install --hook-type commit-msg
 ```
 
+GREP ERRORS:
+```bash
+grep -oP '\[PRODUCT_ERROR\]:\s\w*' logs.log | awk -F" " '{ print $2 }' 1> pid_errors.log
+```

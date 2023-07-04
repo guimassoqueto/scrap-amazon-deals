@@ -4,7 +4,7 @@ from logging import getLogger
 logger = getLogger("get_generator.py")
 
 
-def get_generator(
+def get_deals_generator(
     deals_pages_count: int, invert: bool = False
 ) -> Generator[str, None, None]:
     first_page = "https://www.amazon.com.br/deals?deals-widget=%257B%2522version%2522%253A1%252C%2522viewIndex%2522%253A0%252C%2522presetId%2522%253A%2522deals-collection-all-deals%2522%252C%2522sorting%2522%253A%2522FEATURED%2522%257D"

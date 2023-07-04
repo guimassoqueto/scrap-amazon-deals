@@ -26,10 +26,6 @@ class PlaywrightAmazonPipeline:
             value = adapter.get(field_name)
             adapter[field_name] = value.strip().replace("'", "")
 
-        # get product id
-        value = adapter.get(ProductFields.ID.value)
-        adapter[ProductFields.ID.value] = search(r"/dp/(\w{10})", value).groups()[0]
-
         # convert review count to integer
         value = adapter.get(ProductFields.REVIEWS.value)
         adapter[ProductFields.REVIEWS.value] = int(
