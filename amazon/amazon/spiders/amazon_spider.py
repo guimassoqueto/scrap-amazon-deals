@@ -5,17 +5,27 @@ from amazon.helpers.get_generator import get_generator
 from amazon.helpers.get_is_prime import get_is_prime
 from logging import getLogger
 
+
 logger = getLogger("amazon_spyder.py")
+
+deals_patterns = [
+    "/gp/goldbox",
+    "deals-widget=",
+    "deals?",
+    "/deal/",
+    "showVariations=true",
+    "hidden-keywords=",
+    "s?k=",
+]
 
 
 class AmazonSpiderSpider(scrapy.Spider):
     name = "amazon_spider"
-    base_amazon_url = "https://www.amazon.com.br"
+    base_amazon_url = "https://www.amazon.com.br/"
     current_offers_page = 1
     total_offer_pages = 45  # adicionar metodo para descobrir numero de paginas em promo
 
     def start_requests(self):
-        # GET request
         scrap_all_deals = True
 
         if scrap_all_deals:
@@ -36,20 +46,21 @@ class AmazonSpiderSpider(scrapy.Spider):
             )
 
     def parse(self, response):
-        # if any item is in reponse.url use parse_deals
-        self.url_conditional(response.url)
+        if "/dp/" in response.url:
+            yield response.follow(response.url, callback=self.parse_product)
 
-        if (
-            "deals?" in response.url
-            or "deals-widget=" in response.url
-            or "/gp/goldbox" in response.url
-        ):
+        else:
             hrefs = response.css("a.a-link-normal::attr(href)").getall()
             for href in hrefs:
-                response_url = self.base_amazon_url + href.replace(
-                    "https://www.amazon.com.br", ""
-                )
-                self.url_conditional(response_url)
+                if self.base_amazon_url in href:
+                    if "/dp/" in href:
+                        yield response.follow(href, callback=self.parse_product)
+                    else:
+                        for pattern in deals_patterns:
+                            if pattern in href:
+                                yield response.follow(href, callback=self.parse_deals)
+                else:
+                    logger("[HREF ERROR]", href)
 
     def parse_product(self, response):
         product_item = ProductItem()
@@ -69,25 +80,17 @@ class AmazonSpiderSpider(scrapy.Spider):
             or product_title == ""
             or product_title is None
         ):
-            logger.error(f'[PRODUCT ERROR]: {product_item["id"]}')
-            yield response.follow(response.url, callback=self.parse_product_page)
+            pid = product_item["id"].split("/dp/")[1][10]
+            logger.error(f"[PRODUCT ERROR]: {pid}")
+            yield response.follow(response.url, callback=self.parse_product)
         else:
             yield product_item
 
     def parse_deals(self, response):
         hrefs = response.css("a.a-link-normal::attr(href)").getall()
+        for url in hrefs:
+            if "/dp/" in url:
+                yield response.follow(url, callback=self.parse_product)
 
-        for href in hrefs:
-            response_url = self.base_amazon_url + href.replace(
-                "https://www.amazon.com.br", ""
-            )
-            self.url_conditional(response_url)
-
-    def url_conditional(self, response):
-        deals_patterns = ["/deal/", "showVariations=true", "hidden-keywords=", "s?k="]
-
-        if "/dp/" in response.url:
-            yield response.follow(response.url, callback=self.parse_product_page)
-
-        elif any(pattern in deals_patterns for pattern in response.url):
-            yield response.follow(response.url, callback=self.parse_deals)
+            elif any(pattern in deals_patterns for pattern in url):
+                yield response.follow(url, callback=self.parse_deals)

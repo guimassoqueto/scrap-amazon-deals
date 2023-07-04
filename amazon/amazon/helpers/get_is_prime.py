@@ -12,15 +12,10 @@ def get_is_prime(response: HtmlResponse) -> str:
     if prime_div is not None and "amazon" in prime_div.strip().lower():
         return "true"
 
-    prime_div = (
-        response.css(
-            "#mir-layout-DELIVERY_BLOCK-slot-PRIMARY_DELIVERY_MESSAGE_LARGE>span::text"
-        )
-        .get()
-        .strip()
-        .lower()
-    )
-    if prime_div is not None and "grátis" in prime_div:
+    prime_div = response.css(
+        "#mir-layout-DELIVERY_BLOCK-slot-PRIMARY_DELIVERY_MESSAGE_LARGE>span::text"
+    ).get()
+    if prime_div is not None and "grátis" in prime_div.strip().lower():
         return "true"
 
     return "false"

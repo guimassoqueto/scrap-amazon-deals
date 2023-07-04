@@ -18,4 +18,4 @@ env:
 	cp .env.sample .env 
 
 scrap:
-	make db-migrate && scrapy crawl amazon_spider -L ERROR
+	make db-migrate && rm *.csv && rm *.log&& scrapy crawl amazon_spider -L ERROR
