@@ -1,8 +1,7 @@
 import scrapy
 from amazon.items import ProductItem
 from amazon.helpers.get_category import get_category
-from amazon.helpers.get_deals_generator import get_deals_generator
-from amazon.helpers.get_failed_products_generator import get_failed_products_generator
+from amazon.helpers.get_deals_pages_generator import get_deals_pages_generator
 from amazon.helpers.get_is_prime import get_is_prime
 from logging import getLogger
 from re import search
@@ -24,28 +23,17 @@ class AmazonSpiderSpider(scrapy.Spider):
     name = "amazon_spider"
     base_amazon_url = "https://www.amazon.com.br/"
     current_offers_page = 1
-    total_offer_pages = 43
+    total_offer_pages = 46
 
     def start_requests(self):
-        scrap_all_deals = False
-        if scrap_all_deals:
-            pages = get_deals_generator(self.total_offer_pages)
-            for page in pages:
-                logger.error(
-                    f"[START_REQUESTS] Scraping all deals pages {self.current_offers_page / 2} of {self.total_offer_pages}"
-                )
-                yield scrapy.Request(page, meta={"playwright": True})
-                self.current_offers_page += 1
-        else:
-            pages = get_failed_products_generator()
-            for page in pages:
-                logger.error(f"[START_REQUESTS] Scraping page: {page}")
-                yield scrapy.Request(
-                    page,
-                    dont_filter=True,
-                    meta={"playwright": True},
-                    callback=self.get_failed_product,
-                )
+        pages = get_deals_pages_generator(self.total_offer_pages, invert=True)
+        deals = ["https://www.amazon.com.br/deals"]
+        for page in deals:
+            logger.error(
+                f"[START_REQUESTS] Scraping all deals pages {self.current_offers_page / 2} of {self.total_offer_pages}"
+            )
+            yield scrapy.Request(page, meta={"playwright": True}, dont_filter=True)
+            self.current_offers_page += 1
 
     def parse(self, response):
         if "/dp/" in response.url:
@@ -95,26 +83,3 @@ class AmazonSpiderSpider(scrapy.Spider):
 
             elif any(pattern in deals_patterns for pattern in url):
                 yield response.follow(url, callback=self.parse_deals)
-
-    def get_failed_product(self, response):
-        product_item = ProductItem()
-        product_item["title"] = response.css("title::text").get()
-        product_item["id"] = search(r"/dp/(\w{10})", response.url).groups()[0]
-        product_item["category"] = get_category(
-            response.css("div#wayfinding-breadcrumbs_container").get()
-        )
-        product_item["reviews"] = (
-            response.css("#acrCustomerReviewText::text").get() or "0"
-        )
-        product_item["is_prime"] = get_is_prime(response)
-
-        product_title = str(product_item["title"]).strip().lower()
-        if (
-            product_title == "amazon.com.br"
-            or product_title == ""
-            or product_title is None
-        ):
-            logger.error(f"[PRODUCT_ERROR]: {product_item['id']}")
-            yield response.follow(response.url, callback=self.get_failed_product)
-        else:
-            yield product_item
