@@ -4,6 +4,8 @@ CREATE TABLE products (
 	"category" VARCHAR(255) NOT NULL,
 	"reviews" INTEGER NOT NULL,
 	"is_prime" BOOLEAN NOT NULL DEFAULT 'false',
+	"price" NUMERIC(9,2) NOT NULL,
+	"discount" INTEGER NOT NULL,
 	"created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
 	"updated_at" TIMESTAMP WITH TIME ZONE NOT NULL
 );

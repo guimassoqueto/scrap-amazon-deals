@@ -1,8 +1,10 @@
 import scrapy
 from amazon.items import ProductItem
-from amazon.helpers.get_category import get_category
 from amazon.helpers.get_deals_pages_generator import get_deals_pages_generator
+from amazon.helpers.get_category import get_category
 from amazon.helpers.get_is_prime import get_is_prime
+from amazon.helpers.get_price import get_price
+from amazon.helpers.get_discount import get_discount
 from logging import getLogger
 from re import search
 
@@ -27,8 +29,7 @@ class AmazonSpiderSpider(scrapy.Spider):
 
     def start_requests(self):
         pages = get_deals_pages_generator(self.total_offer_pages, invert=True)
-        deals = ["https://www.amazon.com.br/deals"]
-        for page in deals:
+        for page in ["https://www.amazon.com.br/deals"]:
             logger.error(
                 f"[START_REQUESTS] Scraping all deals pages {self.current_offers_page / 2} of {self.total_offer_pages}"
             )
@@ -63,6 +64,8 @@ class AmazonSpiderSpider(scrapy.Spider):
             response.css("#acrCustomerReviewText::text").get() or "0"
         )
         product_item["is_prime"] = get_is_prime(response)
+        product_item["price"] = get_price(response)
+        product_item["discount"] = get_discount(response)
 
         product_title = str(product_item["title"]).strip().lower()
         if (
