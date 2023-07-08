@@ -12,6 +12,9 @@ class ProductItem(Item):
     title = Field()
     category = Field()
     reviews = Field()
+    is_prime = Field()
+    price = Field()
+    discount = Field()
 
 
 class ProductFields(Enum):
@@ -19,3 +22,6 @@ class ProductFields(Enum):
     TITLE = "title"
     CATEGORY = "category"
     REVIEWS = "reviews"
+    IS_PRIME = "is_prime"
+    PRICE = "price"
+    DISCOUNT = "discount"
