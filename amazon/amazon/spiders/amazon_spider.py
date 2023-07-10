@@ -1,12 +1,15 @@
 import scrapy
 from amazon.items import ProductItem
-from amazon.helpers.get_deals_pages_generator import get_deals_pages_generator
-from amazon.helpers.get_category import get_category
-from amazon.helpers.get_is_prime import get_is_prime
-from amazon.helpers.get_price import get_price
-from amazon.helpers.get_discount import get_discount
+from amazon.helpers.spider_start.get_deals_pages_generator import (
+    get_deals_pages_generator,
+)
+from amazon.helpers.amazon_elements.get_category import get_category
+from amazon.helpers.amazon_elements.get_is_prime import get_is_prime
+from amazon.helpers.amazon_elements.get_price import get_price
+from amazon.helpers.amazon_elements.get_discount import get_discount
 from logging import getLogger
 from re import search
+
 
 logger = getLogger("amazon_spyder.py")
 
@@ -25,11 +28,11 @@ class AmazonSpiderSpider(scrapy.Spider):
     name = "amazon_spider"
     base_amazon_url = "https://www.amazon.com.br/"
     current_offers_page = 1
-    total_offer_pages = 46
+    total_offer_pages = 79
 
     def start_requests(self):
-        pages = get_deals_pages_generator(self.total_offer_pages, invert=True)
-        for page in ["https://www.amazon.com.br/deals"]:
+        pages = get_deals_pages_generator(self.total_offer_pages)
+        for page in pages:
             logger.error(
                 f"[START_REQUESTS] Scraping all deals pages {self.current_offers_page / 2} of {self.total_offer_pages}"
             )
