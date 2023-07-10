@@ -8,7 +8,7 @@ from scrapy import signals
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
 
-from amazon.helpers.fake_header import fake_header
+from amazon.helpers.request.fake_header import fake_header
 
 
 class PlaywrightAmazonSpiderMiddleware:
