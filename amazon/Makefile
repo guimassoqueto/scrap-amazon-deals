@@ -1,13 +1,8 @@
 COMPOSE=docker compose
 
-db:
-	${COMPOSE} up postgres -d
-
-migrate:
-	${COMPOSE} up migrate
-
-db-migrate:
-	${COMPOSE} up postgres migrate -d
+#  init containers (postgres, migrate, rabbitmq) and start scraping
+scrap:
+	docker compose up -d && scrapy crawl amazon_spider -L ERROR
 
 # open repository in browser
 or:
@@ -16,6 +11,3 @@ or:
 # create .env from .env.sample
 env:
 	cp .env.sample .env 
-
-scrap:
-	make db-migrate && scrapy crawl amazon_spider -L ERROR
