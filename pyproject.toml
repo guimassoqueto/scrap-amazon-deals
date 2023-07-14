@@ -5,7 +5,7 @@ description = "Scrapy is a scraper tool framework built in python."
 authors = ["guimassoqueto <gui.massoqueto@gmail.com>"]
 readme = "README.md"
 packages = [
-{include = "amazon/**/*.py"}
+{include = "amazon/amazon/**/*.py"}
 ]
 
 [tool.poetry.dependencies]
