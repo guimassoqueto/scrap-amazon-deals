@@ -28,10 +28,11 @@ class AmazonSpiderSpider(scrapy.Spider):
     name = "amazon_spider"
     base_amazon_url = "https://www.amazon.com.br/"
     current_offers_page = 1
-    total_offer_pages = 79
+    total_offer_pages = 42
 
     def start_requests(self):
         pages = get_deals_pages_generator(self.total_offer_pages)
+
         for page in pages:
             logger.error(
                 f"[START_REQUESTS] Scraping all deals pages {self.current_offers_page / 2} of {self.total_offer_pages}"
@@ -55,6 +56,7 @@ class AmazonSpiderSpider(scrapy.Spider):
                                 yield response.follow(href, callback=self.parse_deals)
                 else:
                     logger.error("[HREF_ERROR]", href)
+                    pass
 
     def parse_product(self, response):
         product_item = ProductItem()
