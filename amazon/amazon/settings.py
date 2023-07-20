@@ -5,32 +5,6 @@
 # https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-
-from dotenv import load_dotenv
-from os import getenv
-from scrapy.utils.log import configure_logging
-from logging import basicConfig, INFO
-
-# configure logging
-configure_logging(install_root_handler=False)
-basicConfig(
-    filename="logs.log",
-    format="[%(asctime)s] %(name)s %(levelname)s: %(message)s",
-    level=INFO,
-)
-# end logging
-
-load_dotenv()
-
-# start .env variables
-POSTGRES_PORT = getenv("POSTGRES_PORT") or 5432
-POSTGRES_DB = getenv("POSTGRES_DB") or "postgres"
-POSTGRES_USER = getenv("POSTGRES_USER") or "postgres"
-POSTGRES_PASSWORD = getenv("POSTGRES_PASSWORD") or "password"
-POSTGRES_HOST = getenv("POSTGRES_HOST") or "127.0.0.1"
-# end .env variables
-
-
 BOT_NAME = "amazon"
 SPIDER_MODULES = ["amazon.spiders"]
 NEWSPIDER_MODULE = "amazon.spiders"
@@ -61,7 +35,7 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
-RETRY_TIMES = 5
+RETRY_TIMES = 1
 
 DOWNLOAD_HANDLERS = {
     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",

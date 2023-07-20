@@ -4,7 +4,7 @@ from scrapy.selector.unified import Selector
 
 
 def convert_price_to_number(price_string: str) -> float:
-    price = search("[\d\,\.]+", price_string)
+    price = search(r"[\d\,\.]+", price_string)
     return float(price.group().replace(".", "").replace(",", "."))
 
 

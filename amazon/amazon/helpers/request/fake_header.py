@@ -50,6 +50,9 @@ def accept_language():
 
 
 def fake_header():
+    """
+    Gera um cabeçalho de requisição aleatório.
+    """
     return {
         "Upgrade-Insecure-Requests": upgrade_insecure_requests(),
         "Accept": accept(),
