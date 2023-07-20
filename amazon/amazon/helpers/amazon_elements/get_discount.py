@@ -1,6 +1,5 @@
 from scrapy.http.response.html import HtmlResponse
 from re import search
-from scrapy.selector.unified import Selector
 
 
 def convert_discount_to_number(discount_string: str) -> int:
