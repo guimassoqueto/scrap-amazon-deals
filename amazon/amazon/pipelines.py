@@ -5,20 +5,17 @@
 
 
 # useful for handling different item types with a single interface
-from typing import List, Tuple
 from itemadapter import ItemAdapter
-from amazon.helpers.postgres_service import PostgresDB
-from amazon.helpers.generate_pid_errors_file import generate_pid_errors_file
+from amazon.helpers.rabbitmq.publisher import RabbitMQPublisher
+from amazon.helpers.database.postgres import PostgresDB
+from amazon.helpers.spider_end.generate_pid_errors_file import (
+    generate_pid_errors_file,
+)
 from amazon.items import ProductFields
 from re import search, sub
 from logging import getLogger
-from amazon.settings import (
-    POSTGRES_DB,
-    POSTGRES_HOST,
-    POSTGRES_PASSWORD,
-    POSTGRES_PORT,
-    POSTGRES_USER,
-)
+import os
+
 
 logger = getLogger("pipelines.py")
 
@@ -45,30 +42,32 @@ class PlaywrightAmazonPipeline:
 
 class SaveToPostgresPipeline:
     async def process_item(self, item, spider):
-        pg = PostgresDB(
-            POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT
-        )
+        pg = PostgresDB()
         await pg.upsert_item("products", item)
         return item
 
 
 class WritePidErrorsPipeline:
     def close_spider(self, spider):
-        pid_errors_file = generate_pid_errors_file("logs.log")
-        pg = PostgresDB(
-            POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT
-        )
-        non_inserted_ids = pg.select_non_inserted_ids(pid_errors_file)
-        if non_inserted_ids:
-            self.write_non_inserted_ids_file(non_inserted_ids)
+        pid_errors_file = generate_pid_errors_file()
+        pg = PostgresDB()
+        non_inserted_pids = pg.select_non_inserted_ids(pid_errors_file)
+        if non_inserted_pids:
+            # TODO: enviar mensagens com os pids com problemas para a fila 'scrap-soup'
+            publisher = RabbitMQPublisher()
+            publisher.publish_failed_pids(non_inserted_pids)
+            delete_files()
         else:
             logger.error("[SUCCESS]: The database is not missing any product")
+            delete_files()
 
-    def write_non_inserted_ids_file(
-        self,
-        non_inserted_ids: List[Tuple[str]],
-        output_file: str = "/home/gmassoqueto/github-repos/scraper-beautiful-soup/insertion_errors.log",
-    ) -> None:
-        with open(output_file, "w", encoding="utf-8") as f:
-            for non_inserted_id in non_inserted_ids:
-                f.write(f"{non_inserted_id[0]}\n")
+
+def delete_files() -> None:
+    if (
+        os.path.exists("pid_errors.log")
+        or os.path.exists("logs.log")
+        or os.path.exists("amazon_products.csv")
+    ):
+        os.remove("pid_errors.log")
+        os.remove("logs.log")
+        os.remove("amazon-products.csv")
