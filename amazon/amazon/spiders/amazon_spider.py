@@ -1,14 +1,19 @@
 import scrapy
 from amazon.items import ProductItem
+from logging import getLogger
+from re import search
 from amazon.helpers.spider_start.get_deals_pages_generator import (
     get_deals_pages_generator,
 )
-from amazon.helpers.amazon_elements.get_category import get_category
-from amazon.helpers.amazon_elements.get_is_prime import get_is_prime
-from amazon.helpers.amazon_elements.get_price import get_price
-from amazon.helpers.amazon_elements.get_discount import get_discount
-from logging import getLogger
-from re import search
+from amazon.helpers.amazon_item.amazon_item import (
+    get_previous_price,
+    get_title,
+    get_image_url,
+    get_category,
+    get_discount,
+    get_free_shipping,
+    get_price,
+)
 
 
 logger = getLogger("amazon_spyder.py")
@@ -28,7 +33,7 @@ class AmazonSpiderSpider(scrapy.Spider):
     name = "amazon_spider"
     base_amazon_url = "https://www.amazon.com.br/"
     current_offers_page = 1
-    total_offer_pages = 42
+    total_offer_pages = 1
 
     def start_requests(self):
         pages = get_deals_pages_generator(self.total_offer_pages)
@@ -60,22 +65,24 @@ class AmazonSpiderSpider(scrapy.Spider):
 
     def parse_product(self, response):
         product_item = ProductItem()
-        product_item["title"] = response.css("title::text").get()
+        product_item["title"] = get_title(response)
         product_item["id"] = search(r"/dp/(\w{10})", response.url).groups()[0]
+        product_item["image_url"] = get_image_url(response)
         product_item["category"] = get_category(
             response.css("div#wayfinding-breadcrumbs_container").get()
         )
         product_item["reviews"] = (
             response.css("#acrCustomerReviewText::text").get() or "0"
         )
-        product_item["is_prime"] = get_is_prime(response)
+        product_item["free_shipping"] = get_free_shipping(response)
         product_item["price"] = get_price(response)
+        product_item["previous_price"] = get_previous_price(response)
         product_item["discount"] = get_discount(response)
 
         product_title = str(product_item["title"]).strip().lower()
         if (
             product_title == "amazon.com.br"
-            or product_title == ""
+            or product_title == "not defined"
             or product_title is None
         ):
             logger.error(f"[PRODUCT_ERROR]: {product_item['id']}")

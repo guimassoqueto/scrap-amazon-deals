@@ -1,17 +1,6 @@
 from dotenv import load_dotenv
 from os import getenv
-from scrapy.utils.log import configure_logging
-from logging import basicConfig, INFO
 
-
-configure_logging(install_root_handler=False)
-basicConfig(
-    filename="logs.log",
-    format="[%(asctime)s] %(name)s %(levelname)s: %(message)s",
-    level=INFO,
-)
-
-load_dotenv()
 
 POSTGRES_PORT = getenv("POSTGRES_PORT") or 5432
 POSTGRES_DB = getenv("POSTGRES_DB") or "postgres"

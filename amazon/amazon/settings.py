@@ -4,6 +4,17 @@
 # https://docs.scrapy.org/en/latest/topics/settings.html
 # https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from scrapy.utils.log import configure_logging
+from logging import basicConfig, INFO
+
+
+configure_logging(install_root_handler=False)
+basicConfig(
+    filename="logs.log",
+    format="[%(asctime)s] %(name)s %(levelname)s: %(message)s",
+    level=INFO,
+)
+
 
 BOT_NAME = "amazon"
 SPIDER_MODULES = ["amazon.spiders"]
@@ -35,7 +46,7 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
-RETRY_TIMES = 1
+RETRY_TIMES = 5
 
 DOWNLOAD_HANDLERS = {
     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
