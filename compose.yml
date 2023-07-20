@@ -25,10 +25,8 @@ services:
     image: migrate/migrate
     networks:
       - local
-    volumes:
-      - ./migrations:/migrations
     entrypoint: migrate
-    command: "-path /migrations -database postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable -verbose up"
+    command: "-source ${MIGRATIONS_PATH} -database postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable -verbose up"
     links:
       - postgres
     depends_on:
@@ -44,7 +42,6 @@ services:
       timeout: 120s
       interval: 30s
       test: ifconfig | grep broadcast
-    env_file: .env
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
