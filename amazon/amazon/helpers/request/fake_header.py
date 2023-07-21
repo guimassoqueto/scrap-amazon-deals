@@ -64,5 +64,5 @@ def fake_header():
         "Sec-Fetch-Site": "none",
         "Sec-Fetch-User": "?1",
         "User-Agent": UserAgent().random,
-        "Referer": "https://google.com/",
+        "Referer": "https://www.instagram.com/",
     }

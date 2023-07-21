@@ -6,6 +6,7 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from amazon.helpers.utils.regex_replacer import regex_replacer
 from amazon.helpers.rabbitmq.publisher import RabbitMQPublisher
 from amazon.helpers.database.postgres import PostgresDB
 from amazon.helpers.spider_end.generate_pid_errors_file import (
@@ -29,7 +30,7 @@ class PlaywrightAmazonPipeline:
         for field_name in field_names:
             value = adapter.get(field_name)
             if isinstance(value, str):
-                adapter[field_name] = sub(r"[^a-zA-Zà-úÀ-Ú0-9_\s\.>]", "", value)
+                adapter[field_name] = regex_replacer(value)
 
         # convert review count to integer
         value = adapter.get(ProductFields.REVIEWS.value)

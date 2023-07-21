@@ -10,18 +10,22 @@ from scrapy.item import Item, Field
 class ProductItem(Item):
     id = Field()
     title = Field()
+    image_url = Field()
     category = Field()
     reviews = Field()
-    is_prime = Field()
+    free_shipping = Field()
     price = Field()
+    previous_price = Field()
     discount = Field()
 
 
 class ProductFields(Enum):
     ID = "id"
     TITLE = "title"
+    IMAGE_URL = "image_url"
     CATEGORY = "category"
     REVIEWS = "reviews"
-    IS_PRIME = "is_prime"
+    FREE_SHIPPING = "free_shipping"
     PRICE = "price"
+    PREVIOUS_PRICE = "previous_price"
     DISCOUNT = "discount"

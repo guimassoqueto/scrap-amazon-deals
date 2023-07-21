@@ -10,4 +10,7 @@ or:
 
 # create .env from .env.sample
 env:
-	cp .env.sample .env 
+	cp .env.sample .env
+
+rmq:
+	docker compose up rabbitmq -d
