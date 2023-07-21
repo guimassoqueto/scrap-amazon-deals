@@ -14,7 +14,7 @@ from amazon.helpers.amazon_item.amazon_item import (
     get_free_shipping,
     get_price,
 )
-
+from settings import DEALS_PAGES
 
 logger = getLogger("amazon_spyder.py")
 
@@ -33,7 +33,7 @@ class AmazonSpiderSpider(scrapy.Spider):
     name = "amazon_spider"
     base_amazon_url = "https://www.amazon.com.br/"
     current_offers_page = 1
-    total_offer_pages = 1
+    total_offer_pages = DEALS_PAGES
 
     def start_requests(self):
         pages = get_deals_pages_generator(self.total_offer_pages)
