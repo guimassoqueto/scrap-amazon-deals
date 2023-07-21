@@ -78,6 +78,15 @@ def get_previous_price(response: HtmlResponse):
         return convert_price_to_number(basis_price_element)
     del basis_price_element
 
+    # ração em tabela
+    basis_price_element = response.css(
+        "span.a-price.a-text-price.a-size-base>span.a-offscreen::text"
+    )
+    if basis_price_element:
+        previous_price = sorted([price.get() for price in basis_price_element])[-1]
+        return convert_price_to_number(previous_price)
+    del basis_price_element
+
     return 0.0
 
 
