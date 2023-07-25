@@ -2,7 +2,7 @@ COMPOSE=docker compose
 
 #  init containers (postgres, migrate, rabbitmq) and start scraping
 a:
-	 cd amazon && scrapy crawl amazon_spider -L ERROR
+	 cd amazon && scrapy crawl amazon_spider -L INFO
 
 # open repository in browser
 or:
