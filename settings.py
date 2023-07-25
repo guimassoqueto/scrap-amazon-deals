@@ -14,4 +14,4 @@ RABBITMQ_DEFAULT_PASS = getenv("RABBITMQ_DEFAULT_PASS") or "password"
 RABBITMQ_DEFAULT_HOST = getenv("RABBITMQ_DEFAULT_HOST") or "localhost"
 RABBITMQ_MAIN_QUEUE = getenv("RABBITMQ_MAIN_QUEUE") or "scrapy-soup"
 
-DEALS_PAGES = getenv("DEALS_PAGES") or 1
+DEALS_PAGES = int(getenv("DEALS_PAGES")) or 1
