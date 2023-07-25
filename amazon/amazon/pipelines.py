@@ -10,7 +10,7 @@ from logging import getLogger
 import os
 from csv import DictReader
 
-from amazon.helpers.rabbitmq.publisher import RabbitMQPublisher
+from amazon.infra.rabbitmq.publisher import RabbitMQPublisher
 
 
 logger = getLogger("pipelines.py")
