@@ -26,11 +26,11 @@ class RabbitMQPublisher:
         self.queue_name = queue_name
         self.channel.queue_declare(self.queue_name, durable=False)
 
-    def publish_failed_pids(self, failed_pids: list):
+    def publish_pids(self, pids: list):
         self.channel.basic_publish(
             exchange="",
             routing_key=self.queue_name,
-            body=json.dumps(failed_pids),
+            body=json.dumps(pids),
             properties=BasicProperties(delivery_mode=PERSISTENT_DELIVERY_MODE),
         )
         self.channel.basic_qos(

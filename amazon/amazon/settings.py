@@ -37,8 +37,7 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     "amazon.pipelines.PlaywrightAmazonPipeline": 300,
-    "amazon.pipelines.SaveToPostgresPipeline": 400,
-    "amazon.pipelines.WritePidErrorsPipeline": 450,
+    "amazon.pipelines.SendMessagePipeline": 400,
 }
 
 # Set settings whose default value is deprecated to a future-proof value

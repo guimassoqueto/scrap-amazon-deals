@@ -1,8 +1,8 @@
 COMPOSE=docker compose
 
 #  init containers (postgres, migrate, rabbitmq) and start scraping
-scrap:
-	docker compose up -d && date +%s 1> /home/gmassoqueto/github-repos/scraper-beautiful-soup/timestamp && cd amazon && scrapy crawl amazon_spider -L ERROR
+a:
+	 cd amazon && scrapy crawl amazon_spider -L ERROR
 
 # open repository in browser
 or:
