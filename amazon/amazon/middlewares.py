@@ -8,7 +8,6 @@ from scrapy import signals
 from amazon.helpers.request.fake_header import fake_header
 from amazon.infra.postgres.postgres_db import PostgresDB
 
-
 logger = getLogger("amazon_spyder.py")
 
 

@@ -1,6 +1,5 @@
-from typing import List
 import psycopg
-from settings import (
+from amazon.settings import (
     POSTGRES_DB,
     POSTGRES_USER,
     POSTGRES_PASSWORD,
