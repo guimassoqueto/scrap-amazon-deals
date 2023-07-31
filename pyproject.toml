@@ -6,7 +6,7 @@ authors = ["guimassoqueto <gui.massoqueto@gmail.com>"]
 readme = "README.md"
 packages = [
 {include = "amazon/amazon/**/*.py"},
-{include = "settings.py"}
+{include = amazon/*.py"}
 ]
 
 [tool.poetry.dependencies]
