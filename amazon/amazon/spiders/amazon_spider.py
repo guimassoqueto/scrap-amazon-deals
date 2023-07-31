@@ -2,11 +2,10 @@ import scrapy
 from amazon.items import ProductItem
 from logging import getLogger
 from re import search
+from amazon.helpers.selenium.get_total_deals_pages import get_total_deals_pages
 from amazon.helpers.spider_start.get_deals_pages_generator import (
     get_deals_pages_generator,
 )
-
-from settings import DEALS_PAGES
 
 logger = getLogger("amazon_spyder.py")
 
@@ -25,7 +24,7 @@ class AmazonSpiderSpider(scrapy.Spider):
     name = "amazon_spider"
     base_amazon_url = "https://www.amazon.com.br/"
     current_offers_page = 1
-    total_offer_pages = DEALS_PAGES
+    total_offer_pages = get_total_deals_pages()
 
     def start_requests(self):
         pages = get_deals_pages_generator(self.total_offer_pages)
