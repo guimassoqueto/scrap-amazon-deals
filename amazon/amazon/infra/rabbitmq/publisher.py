@@ -1,4 +1,4 @@
-from settings import (
+from amazon.settings import (
     RABBITMQ_DEFAULT_HOST,
     RABBITMQ_DEFAULT_USER,
     RABBITMQ_DEFAULT_PASS,
