@@ -2,7 +2,7 @@ COMPOSE=docker compose
 
 #  init containers (postgres, migrate, rabbitmq) and start scraping
 a:
-	 cd amazon && scrapy crawl amazon_spider -L INFO
+	cd amazon && poetry run python main.py
 
 # open repository in browser
 or:
@@ -12,5 +12,6 @@ or:
 env:
 	cp .env.sample .env
 
-rmq:
-	docker compose up rabbitmq -d
+req:
+	poetry export -f requirements.txt --output requirements.txt
+
