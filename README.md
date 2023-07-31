@@ -1,32 +1,32 @@
-# scraper-scrapy
+# scrap-scrapy
 Scrapy is a scraper tool framework built in python
 
-
-## Requirements
-* [asdf](https://asdf-vm.com/)
-* [Python Poetry Dependencies Manager](https://python-poetry.org/)
-* Able to do `make` commands in the terminal
-* [asdf python 3.10+](https://github.com/asdf-community/asdf-python)
-
+### First Step
+Certify that RabbitMq and Postgres are up and running. Use this repo to build the images (scrap folder):
+[Containers](https://github.com/guimassoqueto/containers)
 
 ## Init the project
 
+1. create .env file
+```shell
+make env
+```
 1. init the virtual environment
-```bash
+```shell
 poetry shell
 ```
 
 2. install dependencies
-```bash
+```shell
 poetry install
 ```
 
 3. pre-commit hooks (to avoid bad commit messages, and do tests before commit)
-```bash
+```shell
 pre-commit install && pre-commit install --hook-type commit-msg
 ```
 
-GREP ERRORS:
-```bash
-grep -oP '\[PRODUCT_ERROR\]:\s\w*' logs.log | awk -F" " '{ print $2 }' 1> pid_errors.log
+4. init the app
+```shell
+make a
 ```
