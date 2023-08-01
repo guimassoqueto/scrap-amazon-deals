@@ -1,5 +1,6 @@
 import psycopg
 from amazon.settings import (
+    POSTGRES_TABLE_NAME,
     POSTGRES_DB,
     POSTGRES_USER,
     POSTGRES_PASSWORD,
@@ -18,5 +19,7 @@ class PostgresDB:
         """
         with psycopg.connect(self.conninfo) as aconn:
             with aconn.cursor() as cur:
-                cur.execute("INSERT INTO executions(datetime) VALUES(NOW())")
+                cur.execute(
+                    f"INSERT INTO {POSTGRES_TABLE_NAME}(datetime) VALUES(NOW())"
+                )
             aconn.commit()
