@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scrap-scrapy"
-version = "2.0.1"
+version = "2.0.2"
 description = "Scrapy is a scraper tool framework built in python."
 authors = ["guimassoqueto <gui.massoqueto@gmail.com>"]
 readme = "README.md"
