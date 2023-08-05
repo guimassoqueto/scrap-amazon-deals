@@ -4,7 +4,9 @@ version = "2.0.2"
 description = "Scrapy is a scraper tool framework built in python."
 authors = ["guimassoqueto <gui.massoqueto@gmail.com>"]
 readme = "README.md"
-packages = [{include = "amazon/**/*.py"}]
+packages = [
+{include = "amazon/**/*.py"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"

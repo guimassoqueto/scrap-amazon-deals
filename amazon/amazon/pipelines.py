@@ -30,13 +30,15 @@ class SendMessagePipeline:
         delete_files()
 
 
-def get_pids(csv_file: str) -> list:
+def get_pids(csv_file: str) -> dict:
     pids = set()
     with open(csv_file, "r", encoding="utf-8") as f:
         reader = DictReader(f)
         for row in reader:
             pids.add(row["id"])
-    return list(pids)
+    return {
+        "scrapy_amazon": list(pids)
+    }  # TODO: usar pydantic para definir o formato do objeto
 
 
 def delete_files() -> None:
