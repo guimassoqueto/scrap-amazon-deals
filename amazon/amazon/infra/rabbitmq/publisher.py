@@ -26,7 +26,7 @@ class RabbitMQPublisher:
         self.queue_name = queue_name
         self.channel.queue_declare(self.queue_name, durable=False)
 
-    def publish_pids(self, pids: list):
+    def publish_pids(self, pids: dict):
         self.channel.basic_publish(
             exchange="",
             routing_key=self.queue_name,
