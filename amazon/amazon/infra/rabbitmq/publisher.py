@@ -2,7 +2,7 @@ from amazon.settings import (
     RABBITMQ_DEFAULT_HOST,
     RABBITMQ_DEFAULT_USER,
     RABBITMQ_DEFAULT_PASS,
-    RABBITMQ_MAIN_QUEUE,
+    RABBITMQ_SEND_QUEUE,
 )
 from pika import (
     BlockingConnection,
@@ -15,7 +15,7 @@ import json
 
 
 class RabbitMQPublisher:
-    def __init__(self, queue_name: str = RABBITMQ_MAIN_QUEUE) -> None:
+    def __init__(self, queue_name: str = RABBITMQ_SEND_QUEUE) -> None:
         self.credentials = PlainCredentials(
             RABBITMQ_DEFAULT_USER, RABBITMQ_DEFAULT_PASS
         )

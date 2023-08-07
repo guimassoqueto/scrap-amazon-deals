@@ -28,7 +28,7 @@ POSTGRES_TABLE_NAME = getenv("POSTGRES_TABLE_NAME") or "executions"
 RABBITMQ_DEFAULT_USER = getenv("RABBITMQ_DEFAULT_USER") or "user"
 RABBITMQ_DEFAULT_PASS = getenv("RABBITMQ_DEFAULT_PASS") or "password"
 RABBITMQ_DEFAULT_HOST = getenv("RABBITMQ_DEFAULT_HOST") or "localhost"
-RABBITMQ_MAIN_QUEUE = getenv("RABBITMQ_MAIN_QUEUE") or "scrapy-soup"
+RABBITMQ_SEND_QUEUE = getenv("RABBITMQ_SEND_QUEUE") or "scrapy-soup"
 
 
 BOT_NAME = "amazon"
