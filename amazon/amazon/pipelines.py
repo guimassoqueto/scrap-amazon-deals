@@ -37,7 +37,7 @@ def get_pids(csv_file: str) -> dict:
         for row in reader:
             pids.add(row["id"])
     return {
-        "scrapy_amazon": list(pids)
+        "amazon-colly": list(pids)
     }  # TODO: usar pydantic para definir o formato do objeto
 
 
