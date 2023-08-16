@@ -4,6 +4,9 @@ COMPOSE=docker compose
 a:
 	cd amazon && poetry run python main.py
 
+m: 
+	cd magalu && poetry run python main.py
+
 # open repository in browser
 or:
 	open https://github.com/guimassoqueto/scraper-scrapy
