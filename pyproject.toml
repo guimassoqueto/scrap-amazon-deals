@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "scrap-scrapy"
+name = "scrap-amazon"
 version = "3.0.0"
-description = "Scrapy is a scraper tool framework built in python."
+description = "Scrap Amazon"
 authors = ["guimassoqueto <gui.massoqueto@gmail.com>"]
 readme = "README.md"
 packages = [
