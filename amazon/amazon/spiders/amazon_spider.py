@@ -27,11 +27,15 @@ class AmazonSpiderSpider(scrapy.Spider):
     total_offer_pages = get_total_deals_pages()
 
     def start_requests(self):
-        pages = get_deals_pages_generator(self.total_offer_pages)
+        total_pages = int(self.pages)
+        if total_pages < self.total_offer_pages:
+            pages = get_deals_pages_generator(total_pages)
+        else:
+            pages = get_deals_pages_generator(self.total_offer_pages)
 
         for page in pages:
             logger.info(
-                f"[START_REQUESTS] Scraping all deals pages {self.current_offers_page / 2} of {self.total_offer_pages}"
+                f"[START_REQUESTS] Scraping all deals pages {self.current_offers_page / 2} of {total_pages}"
             )
             yield scrapy.Request(page, meta={"playwright": True})
             self.current_offers_page += 1

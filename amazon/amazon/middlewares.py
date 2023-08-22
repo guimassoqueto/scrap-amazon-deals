@@ -6,7 +6,6 @@
 from logging import getLogger
 from scrapy import signals
 from amazon.helpers.request.fake_header import fake_header
-from amazon.infra.postgres.postgres_db import PostgresDB
 
 logger = getLogger("amazon_spyder.py")
 
@@ -103,18 +102,6 @@ class PlaywrightAmazonDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
-
-
-class InitSpiderMiddleware:
-    @classmethod
-    def from_crawler(cls, crawler):
-        middleware = cls()
-        crawler.signals.connect(middleware.spider_opened, signal=signals.spider_opened)
-        return middleware
-
-    def spider_opened(self, spider):
-        logger.info("Spider started")
-        PostgresDB().execution_datetime()
 
 
 # Fake Header Middleware
