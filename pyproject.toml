@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scrap-amazon-deals"
-version = "3.0.0"
+version = "3.0.3"
 description = "Scrap Amazon Deals"
 authors = ["guimassoqueto <gui.massoqueto@gmail.com>"]
 readme = "README.md"

@@ -31,6 +31,7 @@ class AmazonSpiderSpider(scrapy.Spider):
         if total_pages < self.total_offer_pages:
             pages = get_deals_pages_generator(total_pages)
         else:
+            total_pages = self.total_offer_pages
             pages = get_deals_pages_generator(self.total_offer_pages)
 
         for page in pages:
